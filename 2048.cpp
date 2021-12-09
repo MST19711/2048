@@ -6,6 +6,9 @@
 #define KEY_DOWN(x) ((GetAsyncKeyState(x)&0x8000)?1:0)
 using namespace std;
 int M[10][10];
+int score;
+int win=2018;
+bool lose=0;
 int times=0;
 bool In(int n,int size){
     return (n>=1 and n<=size);
@@ -27,6 +30,7 @@ int rand_number(){
         re*=2;
         num--;
     }
+    score+=re;
     return re;
 }
 void init(int size){
@@ -37,24 +41,36 @@ void init(int size){
         }
     }
 }
-void print(int size){
+int print(int size){
+    lose=1;
     system("cls");
-    for(int k=1;k<=(size*11)+1;k++) cout<<"-";
+    for(int k=1;k<=(size*11)+1;k++) printf("-");
     cout<<endl;
     for(int i=1;i<=size;i++){
-        cout<<"|";
+        printf("|");
         for(int j=1;j<=size;j++){
             int tmp=M[i][j];
+            if(tmp==0)  lose=0;
+            if(M[i][j]==M[i+1][j] or M[i][j]==M[i-1][j] or M[i][j]==M[i][j-1] or M[i][j]==M[i][j+1])    lose=0;
+            if(tmp==win){
+                system("cls");
+                cout<<"You Win"<<endl;
+                cout<<"score : "<<score;
+                return 1;
+            }
             int l=7;
             while(tmp/=10)  l--;
-            while(l--)  cout<<" ";
-            cout<<M[i][j]<<"  |";
+            while(l--)  printf(" ");
+            if(M[i][j]!=0)  printf("%d",M[i][j]);
+            else    printf(" ");
+            printf("  |");
         }
         cout<<endl;
         for(int k=1;k<=(size*11)+1;k++) cout<<"-";
         cout<<endl;
     }
-    cout<<"r:restart a game"<<endl;
+    cout<<"r : restart a game"<<endl;
+    return 0;
 }
 void move_right(int size){
     cout<<"right"<<endl;
@@ -78,6 +94,8 @@ void move_right(int size){
     if(flag){
         srand(time(0)+times);
         int x,y;
+        x%=size,x++;
+        y%=size,y++;
         while(M[x][y]!=0)   x=(rand()%size)+1 , y=(rand()%size)+1;
         M[x][y]=rand_number();
     }
@@ -105,10 +123,10 @@ void move_left(int size){
     print(size);
     if(flag){
         srand(time(0)+times);
-        int x=0,y=0;
-        cout<<x<<","<<y<<endl;
-        while(M[x][y]!=0)   x=(rand()%size)+1 , y=(rand()%size)+1,cout<<x<<","<<y<<endl;
-        cout<<"???"<<endl;
+        int x,y;
+        x%=size,x++;
+        y%=size,y++;
+        while(M[x][y]!=0)   x=(rand()%size)+1 , y=(rand()%size)+1;
         M[x][y]=rand_number();
     }
     cout<<"left:down"<<endl;
@@ -135,6 +153,8 @@ void move_up(int size){
     if(flag){
         srand(time(0)+times);
         int x,y;
+        x%=size,x++;
+        y%=size,y++;
         while(M[x][y]!=0)   x=(rand()%size)+1 , y=(rand()%size)+1;
         M[x][y]=rand_number();
     }
@@ -162,6 +182,8 @@ void move_down(int size){
     if(flag){
         srand(time(0)+times);
         int x,y;
+        x%=size,x++;
+        y%=size,y++;
         while(M[x][y]!=0)   x=(rand()%size)+1 , y=(rand()%size)+1;
         M[x][y]=rand_number();
     }
@@ -170,34 +192,49 @@ void move_down(int size){
 int main(){
     int Size=4;
     while(1){
+        score=0;
+        lose=0;
         times++;
         char o;
-        system("cls");
         cout<<"s:start"<<endl<<"e:exit"<<endl;
         cin>>o;
         if(o=='e') break;
+        system("cls");
         init(Size);
         print(Size);
         while(1){
+            if(lose){
+                cout<<"You lose"<<endl;
+                cout<<"score : "<<score<<endl;
+                cout<<"press \"r\" to restart game"<<endl;
+                while(!KEY_DOWN(82));
+                system("cls");
+                break;
+            }
+            int pd=0;
             if(KEY_DOWN(65)){
-                cout<<"A"<<endl;
-                move_left(Size),print(Size);//A
-                cout<<"A";
+                move_left(Size),pd=print(Size);//A 
+                if(pd)  break;
                 while(KEY_DOWN(65));
             }
             if(KEY_DOWN(68)){
-                move_right(Size),print(Size);//D  
+                move_right(Size),pd=print(Size);//D   
+                if(pd)  break;
                 while(KEY_DOWN(68));  
             }
             if(KEY_DOWN(87)){
-                move_up(Size),print(Size);//W 
+                move_up(Size),pd=print(Size);//W  
+                if(pd)  break;
                 while(KEY_DOWN(87));   
             }
             if(KEY_DOWN(83)){
-                move_down(Size),print(Size);//S  
+                move_down(Size),pd=print(Size);//S  
+                if(pd)  break;
                 while(KEY_DOWN(83));  
             }
-            
+            if(KEY_DOWN(82)){//R
+                break;
+            }
             /*if (1){   //_kbhit()){
                 char ch ;//= getchar();
                 cin>>ch;
