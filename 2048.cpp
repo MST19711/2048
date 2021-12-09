@@ -51,7 +51,10 @@ int print(int size){
         for(int j=1;j<=size;j++){
             int tmp=M[i][j];
             if(tmp==0)  lose=0;
-            if(M[i][j]==M[i+1][j] or M[i][j]==M[i-1][j] or M[i][j]==M[i][j-1] or M[i][j]==M[i][j+1])    lose=0;
+            if( (M[i][j]==M[i+1][j] and i+1<=size) or 
+                (M[i][j]==M[i-1][j] and i-1>0) or 
+                (M[i][j]==M[i][j-1] and j-1>0) or 
+                (M[i][j]==M[i][j+1] and j+1<=size) )    lose=0;
             if(tmp==win){
                 system("cls");
                 cout<<"You Win"<<endl;
@@ -69,6 +72,7 @@ int print(int size){
         for(int k=1;k<=(size*11)+1;k++) cout<<"-";
         cout<<endl;
     }
+    cout<<"score : "<<score<<endl;
     cout<<"r : restart a game"<<endl;
     return 0;
 }
@@ -196,6 +200,7 @@ int main(){
         lose=0;
         times++;
         char o;
+        system("cls");
         cout<<"s:start"<<endl<<"e:exit"<<endl;
         cin>>o;
         if(o=='e') break;
