@@ -1,7 +1,7 @@
 #include<iostream>
 #include<time.h>
 #include<stdlib.h>
-#include<conio.h>
+//#include<conio.h>
 #include<Windows.h>
 #define KEY_DOWN(x) ((GetAsyncKeyState(x)&0x8000)?1:0)
 using namespace std;
