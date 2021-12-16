@@ -1,0 +1,4 @@
+﻿  2048.cpp
+C:\Users\LiCX\Documents\2048\2048\2048\2048\2048.cpp(39,19): warning C4244: “参数”: 从“time_t”转换到“unsigned int”，可能丢失数据
+C:\Users\LiCX\Documents\2048\2048\2048\2048\2048.cpp(45,19): warning C4244: “参数”: 从“time_t”转换到“unsigned int”，可能丢失数据
+  2048.vcxproj -> C:\Users\LiCX\Documents\2048\2048\2048\Debug\2048.exe
